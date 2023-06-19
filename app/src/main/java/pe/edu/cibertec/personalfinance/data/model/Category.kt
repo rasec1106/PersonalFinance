@@ -33,12 +33,12 @@ data class Category (
         fun populateWithMockData(): List<Category>{
             return listOf(
                 Category(1,"Comida","FOOD","#ff0000"),
-                Category(2,"Salud","HEALTH","#ff0000"),
-                Category(3,"Casa","HOME","#ff0000"),
-                Category(4,"Ahorros","SAVING","#ff0000"),
-                Category(5,"Transporte","TRANSPORT","#ff0000"),
-                Category(4,"Viajes","TRAVEL","#ff0000"),
-                Category(5,"Ocio","LEISURE","#ff0000")
+                Category(2,"Salud","HEALTH","#00ff00"),
+                Category(3,"Casa","HOME","#0000ff"),
+                Category(4,"Ahorros","SAVING","#ff00ff"),
+                Category(5,"Transporte","TRANSPORT","#ffff00"),
+                Category(6,"Viajes","TRAVEL","#00ffff"),
+                Category(7,"Ocio","LEISURE","#f0f0f0")
             )
         }
     }

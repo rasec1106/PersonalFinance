@@ -2,9 +2,7 @@ package pe.edu.cibertec.personalfinance.ui.categories
 
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.*
@@ -12,6 +10,7 @@ import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -36,16 +35,25 @@ fun CategoryList(){
                 val slicedArray = categories.value.slice(it*4..it*4+3)
                 Row (){
                     slicedArray.forEach { category->
-                        IconButton(modifier = Modifier
-                            .background(shape = CircleShape, color = category.getCategoryColor())
-                            .weight(4f)
-                            .padding(8.dp),
-                            onClick = {}) {
-                            val icon = Icon(
-                                ImageVector.vectorResource(id = category.getCategoryIcon()),
-                                contentDescription = category.title
-                            )
-                            Text(text = category.title)
+                        Column(modifier = Modifier.weight(4f).padding(8.dp)) {
+                            Row{
+                                IconButton(modifier = Modifier
+                                    .background(
+                                        shape = CircleShape,
+                                        color = category.getCategoryColor())
+                                    , onClick = {}) {
+                                    Icon(
+                                        ImageVector.vectorResource(id = category.getCategoryIcon()),
+                                        contentDescription = category.title
+                                    )
+                                }
+                            }
+                            Row (
+                                modifier = Modifier.fillMaxWidth(),
+                                horizontalArrangement = Arrangement.Center
+                            ){
+                                Text(text = category.title)
+                            }
                         }
                     }
                 }
@@ -57,16 +65,25 @@ fun CategoryList(){
                     val slicedArray = categories.value.takeLast(remainder)
                     Row (){
                         slicedArray.forEach { category->
-                            IconButton(modifier = Modifier
-                                .background(shape = CircleShape, color = category.getCategoryColor())
-                                .weight(4f)
-                                .padding(8.dp),
-                                onClick = {}) {
-                                val icon = Icon(
-                                    ImageVector.vectorResource(id = category.getCategoryIcon()),
-                                    contentDescription = category.title
-                                )
-                                Text(text = category.title)
+                            Column(modifier = Modifier.weight(4f).padding(8.dp)) {
+                                Row{
+                                    IconButton(modifier = Modifier
+                                        .background(
+                                            shape = CircleShape,
+                                            color = category.getCategoryColor())
+                                        , onClick = {}) {
+                                        Icon(
+                                            ImageVector.vectorResource(id = category.getCategoryIcon()),
+                                            contentDescription = category.title
+                                        )
+                                    }
+                                }
+                                Row (
+                                    modifier = Modifier.fillMaxWidth(),
+                                    horizontalArrangement = Arrangement.Center
+                                ){
+                                    Text(text = category.title)
+                                }
                             }
                         }
                         repeat(4-remainder){
