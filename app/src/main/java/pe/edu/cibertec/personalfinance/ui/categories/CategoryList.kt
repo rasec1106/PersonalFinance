@@ -14,10 +14,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import pe.edu.cibertec.personalfinance.R
+import pe.edu.cibertec.personalfinance.data.local.AppDatabase
 import pe.edu.cibertec.personalfinance.data.model.Category
 
 import pe.edu.cibertec.personalfinance.ui.theme.PersonalFinanceTheme
@@ -27,7 +29,26 @@ fun CategoryList(){
     val categories = remember{
         mutableStateOf(listOf<Category>())
     }
-    categories.value = Category.populateWithMockData()
+
+    //categories.value = Category.populateWithMockData()
+    val context = LocalContext.current
+
+    val insertAll = listOf(
+        Category(1,"Comida","FOOD","#ff0000"),
+        Category(2,"Salud","HEALTH","#00ff00"),
+        Category(3,"Casa","HOME","#0000ff"),
+        Category(4,"Ahorros","SAVING","#ff00ff"),
+        Category(5,"Transporte","TRANSPORT","#ffff00"),
+        Category(6,"Viajes","TRAVEL","#00ffff"),
+        Category(7,"Ocio","LEISURE","#f0f0f0")
+
+    )
+    val dao = AppDatabase.getInstance(context).dao()
+    dao.insertAll(insertAll)
+
+    val categoryDao = AppDatabase.getInstance(context).dao()
+    categories.value = categoryDao.getAll()
+
     val remainder = categories.value.size%4
     LazyColumn(){
         items(categories.value.size/4) {
