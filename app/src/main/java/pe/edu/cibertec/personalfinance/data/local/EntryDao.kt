@@ -22,7 +22,7 @@ interface EntryDao {
     @Update
     fun update(entry: Entry)
 
-    @Query("select * from entry")
+    @Query("SELECT * FROM entry")
     fun getAll(): List<Entry>
 
 }

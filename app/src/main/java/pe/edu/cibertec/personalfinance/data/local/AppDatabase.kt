@@ -5,8 +5,9 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import pe.edu.cibertec.personalfinance.data.model.Category
+import pe.edu.cibertec.personalfinance.data.model.Entry
 
-@Database(entities = [Category::class], version = 1)
+@Database(entities = [Category::class, Entry::class], version = 1)
 abstract class AppDatabase : RoomDatabase() {
 
     abstract fun dao(): CategoryDao
