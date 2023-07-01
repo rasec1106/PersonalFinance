@@ -6,5 +6,5 @@ import retrofit2.http.GET
 
 interface EntryService {
     @GET("entries")
-    fun getEntries(): Call<Entry>
+    fun getEntries(): Call<List<Entry>>
 }
