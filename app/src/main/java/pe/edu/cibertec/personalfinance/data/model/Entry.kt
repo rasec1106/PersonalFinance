@@ -1,13 +1,29 @@
 package pe.edu.cibertec.personalfinance.data.model
 
+import androidx.room.ColumnInfo
+import androidx.room.Embedded
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import java.util.Date
 
+@Entity(tableName = "entry")
 data class Entry (
+    @PrimaryKey(autoGenerate = true)
     val id: Int,
+
+    @ColumnInfo(name = "amount")
     val amount: Number,
+
+    @Embedded
     val category: Category,
+
+    @ColumnInfo(name = "date")
     val date: String,
+
+    @ColumnInfo(name = "comment")
     val comment: String,
+
+    @ColumnInfo(name = "type")
     val type: Int
 ){
     companion object{

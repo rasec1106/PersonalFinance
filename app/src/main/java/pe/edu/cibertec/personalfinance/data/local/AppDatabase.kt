@@ -10,6 +10,7 @@ import pe.edu.cibertec.personalfinance.data.model.Category
 abstract class AppDatabase : RoomDatabase() {
 
     abstract fun dao(): CategoryDao
+    abstract fun daoEntry(): EntryDao
 
     companion object {
         private var INSTANCE: AppDatabase? = null
