@@ -11,6 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import pe.edu.cibertec.personalfinance.ui.categories.CategoryList
+import pe.edu.cibertec.personalfinance.ui.entries.EntryList
 import pe.edu.cibertec.personalfinance.ui.theme.PersonalFinanceTheme
 
 class MainActivity : ComponentActivity() {
@@ -39,6 +40,6 @@ fun Greeting(name: String) {
 @Composable
 fun DefaultPreview() {
     PersonalFinanceTheme {
-        CategoryList()
+        EntryList()
     }
 }
