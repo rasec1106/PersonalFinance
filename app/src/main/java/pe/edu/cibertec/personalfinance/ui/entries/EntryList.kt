@@ -1,5 +1,7 @@
 package pe.edu.cibertec.personalfinance.ui.entries
 
+import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -9,6 +11,8 @@ import androidx.compose.material.Card
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Edit
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -26,6 +30,7 @@ import pe.edu.cibertec.personalfinance.data.model.Category
 import pe.edu.cibertec.personalfinance.data.model.Entry
 import pe.edu.cibertec.personalfinance.data.repository.EntryRepository
 import pe.edu.cibertec.personalfinance.ui.theme.PersonalFinanceTheme
+import pe.edu.cibertec.personalfinance.util.Result
 
 @Composable
 fun EntryList(){
@@ -35,13 +40,25 @@ fun EntryList(){
     //entries.value = Entry.populateWithMockData()
 
     val context = LocalContext.current
-
+    var str = remember {
+        mutableStateOf("")
+    }
     val entryRepository = EntryRepository()
     entryRepository.getEntries(1,context) {result ->
-        entries.value = result.data!!
+        if(result is Result.Success){
+            entries.value = result.data!!
+
+        } else{
+            str.value = result.message.toString()
+        }
+
     }
 
     LazyColumn(){
+        item {
+        Text(text = "S/${str.value}", fontSize = 16.sp)
+        }
+
         items(entries.value) {entry ->
             Card(
                 modifier = Modifier
@@ -50,7 +67,9 @@ fun EntryList(){
                 backgroundColor = Color.hsl(207F, 0.22F, 0.88F,1F)
             ) {
                 Column(
-                    modifier = Modifier.fillMaxWidth().padding(8.dp)
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(8.dp)
                 ){
                     Row(modifier = Modifier.fillMaxWidth()) {
                         Text(text = entry.date, modifier = Modifier.padding(2.dp), fontSize = 13.sp)

@@ -43,10 +43,10 @@ fun CategoryList(){
         Category(7,"Ocio","LEISURE","#f0f0f0")
 
     )
-    val dao = AppDatabase.getInstance(context).dao()
+    val dao = AppDatabase.getInstance(context).categoryDao()
     dao.insertAll(insertAll)
 
-    val categoryDao = AppDatabase.getInstance(context).dao()
+    val categoryDao = AppDatabase.getInstance(context).categoryDao()
     categories.value = categoryDao.getAll()
 
     val remainder = categories.value.size%4

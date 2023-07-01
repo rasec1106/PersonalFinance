@@ -1,20 +1,19 @@
 package pe.edu.cibertec.personalfinance.data.model
 
-import android.content.Context
 import androidx.compose.ui.graphics.Color
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.Ignore
 import androidx.room.PrimaryKey
 import pe.edu.cibertec.personalfinance.R
-import java.io.IOException
 
 
 @Entity(tableName = "category")
 data class Category (
 
     @PrimaryKey(autoGenerate = true)
-    val id: Int,
+    @ColumnInfo(name = "idCategory")
+    val idCategory: Int,
 
     @ColumnInfo(name = "title")
     val title: String,
@@ -25,18 +24,16 @@ data class Category (
     @ColumnInfo(name = "color")
     val color: String
 ){
-    @Ignore
-    private val map = mapOf(
-        "FOOD" to R.drawable.lunch_dinning_foreground,
-        "HEALTH" to R.drawable.health_foreground,
-        "HOME" to R.drawable.home_foreground,
-        "SAVING" to R.drawable.saving_foreground,
-        "TRANSPORT" to R.drawable.transportation_foreground,
-        "TRAVEL" to R.drawable.travel_foreground,
-        "LEISURE" to R.drawable.leisure_foreground
-    )
-
     fun getCategoryIcon(): Int{
+        val map = mapOf(
+            "FOOD" to R.drawable.lunch_dinning_foreground,
+            "HEALTH" to R.drawable.health_foreground,
+            "HOME" to R.drawable.home_foreground,
+            "SAVING" to R.drawable.saving_foreground,
+            "TRANSPORT" to R.drawable.transportation_foreground,
+            "TRAVEL" to R.drawable.travel_foreground,
+            "LEISURE" to R.drawable.leisure_foreground
+        )
         return map.getValue(icon)
     }
 
