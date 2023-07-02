@@ -9,6 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.vectorResource
@@ -40,6 +41,9 @@ fun CategoryList(navController: NavController){
             str.value = result.message.toString()
         }
     }
+    val currentCategory = remember {
+        mutableStateOf<Category?>(navController.previousBackStackEntry?.savedStateHandle?.get("category"))
+    }
 
     navController.currentBackStackEntry?.savedStateHandle?.set(
         key = "hasChanged",
@@ -55,26 +59,33 @@ fun CategoryList(navController: NavController){
                     slicedArray.forEach { category->
                         Column(modifier = Modifier
                             .weight(4f)
-                            .padding(8.dp)) {
+                            .padding(8.dp)
+                        ) {
                             Row{
-                                IconButton(modifier = Modifier
-                                    .background(
-                                        shape = CircleShape,
-                                        color = category.getCategoryColor())
-                                    , onClick = {
-                                        navController.currentBackStackEntry?.savedStateHandle?.set(
-                                            key = "hasChanged",
-                                            value = true
-                                        )
-                                        navController.currentBackStackEntry?.savedStateHandle?.set(
-                                            key = "category",
-                                            value = category
-                                        )
+                                Column(modifier = Modifier.background(color =
+                                    if(currentCategory.value?.id == category.id) Color.LightGray
+                                    else Color.White
+                                )) {
+                                    IconButton(modifier = Modifier
+                                        .background(
+                                            shape = CircleShape,
+                                            color = category.getCategoryColor()
+                                        ), onClick = {
+                                            currentCategory.value = category
+                                            navController.currentBackStackEntry?.savedStateHandle?.set(
+                                                key = "hasChanged",
+                                                value = true
+                                            )
+                                            navController.currentBackStackEntry?.savedStateHandle?.set(
+                                                key = "category",
+                                                value = category
+                                            )
                                     }) {
-                                    Icon(
-                                        ImageVector.vectorResource(id = category.getCategoryIcon()),
-                                        contentDescription = category.title
-                                    )
+                                        Icon(
+                                            ImageVector.vectorResource(id = category.getCategoryIcon()),
+                                            contentDescription = category.title
+                                        )
+                                    }
                                 }
                             }
                             Row (
@@ -98,24 +109,30 @@ fun CategoryList(navController: NavController){
                                 .weight(4f)
                                 .padding(8.dp)) {
                                 Row{
-                                    IconButton(modifier = Modifier
-                                        .background(
-                                            shape = CircleShape,
-                                            color = category.getCategoryColor())
-                                        , onClick = {
-                                            navController.currentBackStackEntry?.savedStateHandle?.set(
-                                                key = "hasChanged",
-                                                value = true
-                                            )
-                                            navController.currentBackStackEntry?.savedStateHandle?.set(
-                                                key = "category",
-                                                value = category
-                                            )
+                                    Column(modifier = Modifier.background(color =
+                                    if(currentCategory.value?.id == category.id) Color.LightGray
+                                    else Color.White
+                                    )) {
+                                        IconButton(modifier = Modifier
+                                            .background(
+                                                shape = CircleShape,
+                                                color = category.getCategoryColor()
+                                            ), onClick = {
+                                                currentCategory.value = category
+                                                navController.currentBackStackEntry?.savedStateHandle?.set(
+                                                    key = "hasChanged",
+                                                    value = true
+                                                )
+                                                navController.currentBackStackEntry?.savedStateHandle?.set(
+                                                    key = "category",
+                                                    value = category
+                                                )
                                         }) {
-                                        Icon(
-                                            ImageVector.vectorResource(id = category.getCategoryIcon()),
-                                            contentDescription = category.title
-                                        )
+                                            Icon(
+                                                ImageVector.vectorResource(id = category.getCategoryIcon()),
+                                                contentDescription = category.title
+                                            )
+                                        }
                                     }
                                 }
                                 Row (

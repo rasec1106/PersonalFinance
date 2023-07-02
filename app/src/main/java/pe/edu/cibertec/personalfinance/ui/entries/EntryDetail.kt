@@ -43,6 +43,10 @@ fun EntryDetail(navController: NavController){
     val entryRepository = EntryRepository()
     val context = LocalContext.current
 
+    navController.previousBackStackEntry?.savedStateHandle?.set<Category>(
+        key = "category",
+        value = selectedCategory.value
+    )
     
     Column {
         TextField(
