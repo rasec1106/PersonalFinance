@@ -10,7 +10,7 @@ interface CategoryService {
     @POST("categories")
     fun createCategory(@Body category: Category): Call<Category>
     @PUT("categories/{id}")
-    fun updateCategory(@Body Category: Category, @Path("id") id: Int): Call<Category>
+    fun updateCategory(@Body category: Category, @Path("id") id: Int): Call<Category>
     @DELETE("categories/{id}")
     fun deleteCategory(@Path("id") id: Int): Call<Category>
 }
