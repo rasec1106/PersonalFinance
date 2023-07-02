@@ -20,28 +20,28 @@ import pe.edu.cibertec.personalfinance.data.model.Category
 import pe.edu.cibertec.personalfinance.data.model.Entry
 import pe.edu.cibertec.personalfinance.data.repository.EntryRepository
 import pe.edu.cibertec.personalfinance.ui.Route
+import pe.edu.cibertec.personalfinance.ui.categories.CategoryList
 import pe.edu.cibertec.personalfinance.ui.theme.PersonalFinanceTheme
 import pe.edu.cibertec.personalfinance.util.Result
 
 @Composable
 fun EntryDetail(navController: NavController){
     val selectedEntry: Entry? = navController.previousBackStackEntry?.savedStateHandle?.get<Entry>("entry")
-
+    val selectedCategory = remember {
+        mutableStateOf(selectedEntry?.category)
+    }
     val amount = remember {
-        mutableStateOf(selectedEntry?.amount.toString() ?: "")
+        mutableStateOf(selectedEntry?.amount.toString())
     }
     val date = remember {
-        mutableStateOf(selectedEntry?.date.toString() ?: "")
+        mutableStateOf(selectedEntry?.date.toString())
     }
     val comment = remember {
-        mutableStateOf(selectedEntry?.comment.toString() ?: "")
+        mutableStateOf(selectedEntry?.comment.toString())
     }
     val type = 0
-    val category = selectedEntry?.category ?: Category(1,"Comida","FOOD","#ff0000")
-
     val entryRepository = EntryRepository()
     val context = LocalContext.current
-
 
     
     Column {
@@ -69,15 +69,20 @@ fun EntryDetail(navController: NavController){
                 comment.value = it
             }
         )
+        Text(text = "Categoria")
+        CategoryList(navController = navController)
         Button(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(8.dp, 16.dp, 8.dp, 0.dp),
             onClick = {
+                val hasChanged: Boolean? = navController.currentBackStackEntry?.savedStateHandle?.get<Boolean>("hasChanged")
+                if(hasChanged!!)
+                    selectedCategory.value = navController.currentBackStackEntry?.savedStateHandle?.get<Category>("category")
                 val entry = Entry(
                     selectedEntry?.id ?: 0,
                     amount.value.toDouble(),
-                    category,
+                    selectedCategory.value!!,
                     date.value,
                     comment.value,
                     type

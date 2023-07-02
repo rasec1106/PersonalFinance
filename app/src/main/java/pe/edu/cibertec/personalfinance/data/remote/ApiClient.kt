@@ -1,5 +1,6 @@
 package pe.edu.cibertec.personalfinance.data.remote
 
+import pe.edu.cibertec.personalfinance.data.remote.service.CategoryService
 import pe.edu.cibertec.personalfinance.data.remote.service.EntryService
 import pe.edu.cibertec.personalfinance.data.remote.service.UserService
 import retrofit2.Retrofit
@@ -11,6 +12,7 @@ object ApiClient {
     private var retrofit: Retrofit? = null
     private var entryService: EntryService? = null
     private var userService: UserService? = null
+    private var categoryService: CategoryService? = null
 
     private fun getRetrofit(): Retrofit {
         if(retrofit == null){
@@ -27,10 +29,16 @@ object ApiClient {
         }
         return entryService as EntryService
     }
-    fun getUserInterface(): UserService {
+    fun getUserService(): UserService {
         if (userService == null){
             userService = getRetrofit().create(UserService::class.java)
         }
         return userService as UserService
+    }
+    fun getCategoryService(): CategoryService {
+        if (categoryService == null){
+            categoryService = getRetrofit().create(CategoryService::class.java)
+        }
+        return categoryService as CategoryService
     }
 }

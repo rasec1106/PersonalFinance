@@ -8,7 +8,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class UserRepository(private val userService: UserService = ApiClient.getUserInterface()) {
+class UserRepository(private val userService: UserService = ApiClient.getUserService()) {
 
     fun login(username: String, password: String, callback: (Result<Boolean>) -> Unit) {
 
