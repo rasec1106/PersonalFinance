@@ -4,6 +4,7 @@ package pe.edu.cibertec.personalfinance.Login.Models
 
 import android.widget.Toast
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
@@ -69,8 +70,10 @@ fun LoginScreen(navController: NavController){
                 TextField(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(8.dp, 0.dp, 8.dp, 0.dp),
-                    placeholder = { Text(text = "Usuario") },
+                        .padding(8.dp, 0.dp, 8.dp, 0.dp)
+                        .background(Color.White, shape = RoundedCornerShape(20.dp))
+                        .border(2.dp,Color.Gray,shape = RoundedCornerShape(20.dp)),
+                    placeholder = { Text(text = "Username") },
                     value = user.value,
                     onValueChange = {user.value = it},
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
@@ -89,7 +92,9 @@ fun LoginScreen(navController: NavController){
                 TextField(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(8.dp, 0.dp, 8.dp, 0.dp),
+                        .padding(8.dp, 0.dp, 8.dp, 0.dp)
+                        .background(Color.White, shape = RoundedCornerShape(20.dp))
+                        .border(2.dp,Color.Gray,shape = RoundedCornerShape(20.dp)),
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
                     placeholder = { Text(text = "Password") },
                     value = password.value,
@@ -133,7 +138,8 @@ fun LoginScreen(navController: NavController){
                 Button(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(48.dp),
+                        .height(48.dp)
+                        .border(2.dp,Color.Transparent,shape = RoundedCornerShape(15.dp)),
                     colors=ButtonDefaults.buttonColors(
                         backgroundColor = Color(0xAB0389FF),
 
@@ -159,7 +165,8 @@ fun LoginScreen(navController: NavController){
                 Button(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(48.dp),
+                        .height(48.dp)
+                        .border(2.dp,Color.Transparent,shape = RoundedCornerShape(15.dp)),
                     colors=ButtonDefaults.buttonColors(
                         backgroundColor = Color(0xAB0389FF),
                         disabledBackgroundColor = Color(0xFF586DF7),
