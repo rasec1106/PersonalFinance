@@ -76,11 +76,11 @@ class UserRepository(private val userService: UserService = ApiClient.getUserSer
         username: String,
         password: String,
         confirmPassword: String,
-        /*cambiar a ingles*/
-        correo: String,
-        nombres:String,
-        apellidos:String,
-        numerotelefono:String,
+
+        email: String,
+        firstName:String,
+        lastName:String,
+        phone:String,
         callback: (Result<Boolean>) -> Unit
     ) {
 
@@ -96,10 +96,8 @@ class UserRepository(private val userService: UserService = ApiClient.getUserSer
                 return@validateUser
             }
 
-            userService.createUser(User(username, password,correo,
-                nombres,
-            apellidos,
-            numerotelefono)).enqueue(object : Callback<User> {
+            userService.createUser(
+                User(username, password,email,firstName, lastName,phone)).enqueue(object : Callback<User> {
                 override fun onResponse(call: Call<User>, response: Response<User>) {
                     if (!response.isSuccessful) {
                         callback(Result.Error("Unsuccessful response"))

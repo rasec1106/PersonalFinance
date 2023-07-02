@@ -84,6 +84,7 @@ fun EntryDetail(navController: NavController){
                 val hasChanged: Boolean? = navController.currentBackStackEntry?.savedStateHandle?.get<Boolean>("hasChanged")
                 if(hasChanged!!)
                     selectedCategory.value = navController.currentBackStackEntry?.savedStateHandle?.get<Category>("category")
+
                 val entry = Entry(
                     selectedEntry?.id ?: 0,
                     amount.value.toDouble(),
