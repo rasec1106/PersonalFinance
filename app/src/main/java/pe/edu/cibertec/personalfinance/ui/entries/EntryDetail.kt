@@ -116,21 +116,18 @@ fun EntryDetail(navController: NavController){
                 )
                 .padding(12.dp, 8.dp, 12.dp, 8.dp),
                 fontSize = 16.sp,
-                text = "Categoria")
+                text = "Elige la categoria")
         }
 
-
-        Spacer(modifier = Modifier.padding(12.dp))
         Box(modifier = Modifier
             .background(Color.Transparent, shape = RoundedCornerShape(20.dp))
             .padding(8.dp, 0.dp, 8.dp, 0.dp)
             ){
             CategorySection(navController = navController)
         }
-
+        Spacer(modifier=Modifier.padding(5.dp))
         Button(
             modifier = Modifier
-                .padding(10.dp, 15.dp, 10.dp, 15.dp)
                 .fillMaxWidth()
                 .height(48.dp),
             colors= ButtonDefaults.buttonColors(
@@ -179,9 +176,9 @@ fun EntryDetail(navController: NavController){
                 else "Crear entrada"
             )
         }
+        Spacer(modifier=Modifier.padding(2.dp))
         Button(
             modifier = Modifier
-                .padding(10.dp, 15.dp, 10.dp, 15.dp)
                 .fillMaxWidth()
                 .height(48.dp),
             colors=ButtonDefaults.buttonColors(

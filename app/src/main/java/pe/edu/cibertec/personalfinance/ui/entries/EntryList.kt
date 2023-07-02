@@ -54,7 +54,7 @@ fun EntryList(navController: NavController){
         value = user
     )
     val entryRepository = EntryRepository()
-    entryRepository.getEntries(1,context, 3) { result ->
+    entryRepository.getEntries(1,context, user!!.id) { result ->
         if(result is Result.Success){
             entries.value = result.data!!
             Log.d("ENTRIES", entries.value.toString())
