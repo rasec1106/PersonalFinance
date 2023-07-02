@@ -1,17 +1,21 @@
 package pe.edu.cibertec.personalfinance.data.model
 
+import android.os.Parcelable
 import androidx.annotation.NonNull
 import androidx.room.ColumnInfo
 import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import java.util.Date
+import com.google.gson.annotations.SerializedName
+import kotlinx.parcelize.Parcelize
+
 
 @Entity(tableName = "entry")
+@Parcelize
 data class Entry (
     @PrimaryKey(autoGenerate = true)
-    @ColumnInfo(name = "entry_id")
-    val id: Int = 0,
+    @ColumnInfo(name = "idEntry")
+    val id: Int,
 
     @ColumnInfo(name = "amount")
     @NonNull
@@ -21,14 +25,14 @@ data class Entry (
     val category: Category,
 
     @ColumnInfo(name = "date")
-    val date: String = "",
+    val date: String,
 
     @ColumnInfo(name = "comment")
-    val comment: String = "",
+    val comment: String,
 
     @ColumnInfo(name = "type")
-    val type: Int = 0
-)/*{
+    val type: Int
+): Parcelable {
 
     companion object{
         fun populateWithMockData(): List<Entry>{
@@ -44,5 +48,5 @@ data class Entry (
             )
         }
     }
-}*/
+}
 

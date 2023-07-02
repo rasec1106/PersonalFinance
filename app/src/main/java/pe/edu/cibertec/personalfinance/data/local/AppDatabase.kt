@@ -10,8 +10,8 @@ import pe.edu.cibertec.personalfinance.data.model.Entry
 @Database(entities = [Category::class, Entry::class], version = 1)
 abstract class AppDatabase : RoomDatabase() {
 
-    abstract fun dao(): CategoryDao
-    abstract fun daoEntry(): EntryDao
+    abstract fun categoryDao(): CategoryDao
+    abstract fun entryDao(): EntryDao
 
     companion object {
         private var INSTANCE: AppDatabase? = null

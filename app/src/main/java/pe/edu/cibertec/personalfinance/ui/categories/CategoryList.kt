@@ -18,6 +18,8 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import pe.edu.cibertec.personalfinance.R
 import pe.edu.cibertec.personalfinance.data.local.AppDatabase
 import pe.edu.cibertec.personalfinance.data.model.Category
@@ -25,7 +27,7 @@ import pe.edu.cibertec.personalfinance.data.model.Category
 import pe.edu.cibertec.personalfinance.ui.theme.PersonalFinanceTheme
 
 @Composable
-fun CategoryList(){
+fun CategoryList(navController: NavController){
     val categories = remember{
         mutableStateOf(listOf<Category>())
     }
@@ -43,10 +45,10 @@ fun CategoryList(){
         Category(7,"Ocio","LEISURE","#f0f0f0")
 
     )
-    val dao = AppDatabase.getInstance(context).dao()
+    val dao = AppDatabase.getInstance(context).categoryDao()
     dao.insertAll(insertAll)
 
-    val categoryDao = AppDatabase.getInstance(context).dao()
+    val categoryDao = AppDatabase.getInstance(context).categoryDao()
     categories.value = categoryDao.getAll()
 
     val remainder = categories.value.size%4
@@ -120,8 +122,8 @@ fun CategoryList(){
 
 @Preview(showBackground = true)
 @Composable
-fun DefaultPreview(){
+fun CategoryListDefaultPreview(){
     PersonalFinanceTheme {
-        CategoryList()
+        CategoryList(navController = rememberNavController())
     }
 }

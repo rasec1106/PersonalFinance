@@ -1,14 +1,15 @@
 package pe.edu.cibertec.personalfinance.ui.entries
 
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.Card
-import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
-import androidx.compose.material.Text
+import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Edit
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -21,38 +22,48 @@ import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import pe.edu.cibertec.personalfinance.data.local.AppDatabase
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import pe.edu.cibertec.personalfinance.data.model.Category
 import pe.edu.cibertec.personalfinance.data.model.Entry
+import pe.edu.cibertec.personalfinance.data.repository.EntryRepository
+import pe.edu.cibertec.personalfinance.ui.Route
 import pe.edu.cibertec.personalfinance.ui.theme.PersonalFinanceTheme
+import pe.edu.cibertec.personalfinance.util.Result
 
 @Composable
-fun EntryList(){
+fun EntryList(navController: NavController){
     val entries = remember{
         mutableStateOf(listOf<Entry>())
     }
     //entries.value = Entry.populateWithMockData()
 
     val context = LocalContext.current
+    var str = remember {
+        mutableStateOf("")
+    }
+    val entryRepository = EntryRepository()
+    entryRepository.getEntries(1,context) {result ->
+        if(result is Result.Success){
+            entries.value = result.data!!
 
-    val insertAll = listOf(
-        Entry(1, 50.5,Category(1,"Comida","FOOD","#ff0000"),"2023-06-01", "Norky's", 0),
-        Entry(2, 10.5,Category(2,"Salud","HEALTH","#00ff00"),"2023-06-01", "Medico a domicilio", 0),
-        Entry(3, 20.5,Category(3,"Casa","HOME","#0000ff"),"2023-06-08", "Pasta dental y cepillo", 0),
-        Entry(4, 150.0,Category(4,"Ahorros","SAVING","#ff00ff"),"2023-06-09", "Ahorro viaje", 1),
-        Entry(5, 15.0,Category(5,"Transporte","TRANSPORT","#ffff00"),"2023-06-11", "Pasajes universidad", 0),
-        Entry(6, 350.80,Category(6,"Viajes","TRAVEL","#00ffff"),"2023-06-12", "Viaje a Trujillo", 0),
-        Entry(7, 20.0,Category(1,"Comida","FOOD","#ff0000"),"2023-06-13", "Salchipapa", 0),
-        Entry(8, 38.0,Category(7,"Ocio","LEISURE","#f0f0f0"),"2023-06-15", "Cineplanet", 0)
-    )
-    val dao = AppDatabase.getInstance(context).daoEntry()
-    dao.insertAll(insertAll)
-
-    val entryDao = AppDatabase.getInstance(context).daoEntry()
-    entries.value = entryDao.getAll()
-
+        } else{
+            str.value = result.message.toString()
+        }
+    }
 
     LazyColumn(){
+        item{
+            Button(onClick = {
+                navController.currentBackStackEntry?.savedStateHandle?.set(
+                    key = "entry",
+                    value = Entry(0,0.0, Category(1,"Comida","FOOD","#ff0000"),"","",0)
+                )
+                navController.navigate(Route.EntryDetail.route)
+            }) {
+                Text(text = "Nueva Entrada")
+            }
+        }
         items(entries.value) {entry ->
             Card(
                 modifier = Modifier
@@ -61,7 +72,9 @@ fun EntryList(){
                 backgroundColor = Color.hsl(207F, 0.22F, 0.88F,1F)
             ) {
                 Column(
-                    modifier = Modifier.fillMaxWidth().padding(8.dp)
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(8.dp)
                 ){
                     Row(modifier = Modifier.fillMaxWidth()) {
                         Text(text = entry.date, modifier = Modifier.padding(2.dp), fontSize = 13.sp)
@@ -116,6 +129,32 @@ fun EntryList(){
                                 Text(text = "S/${entry.amount}", fontSize = 16.sp)
                             }
                         }
+                        Column() {
+                            IconButton(modifier = Modifier.weight(1f), onClick = {
+                                navController.currentBackStackEntry?.savedStateHandle?.set(
+                                    key = "entry",
+                                    value = entry
+                                )
+                                navController.navigate(Route.EntryDetail.route)
+                            }) {
+                                Icon(Icons.Filled.Edit,null)
+                            }
+                            IconButton(modifier = Modifier.weight(1f), onClick = {
+                                entryRepository.deleteEntry(1, context, entry.id){ result ->
+                                    Toast.makeText(context, result.message.toString(), Toast.LENGTH_SHORT).show()
+                                    entryRepository.getEntries(1,context) {result ->
+                                        if(result is Result.Success){
+                                            entries.value = result.data!!
+
+                                        } else{
+                                            str.value = result.message.toString()
+                                        }
+                                    }
+                                }
+                            }) {
+                                Icon(Icons.Filled.Delete, null)
+                            }
+                        }
                     }
                 }
             }
@@ -125,8 +164,8 @@ fun EntryList(){
 
 @Preview(showBackground = true)
 @Composable
-fun DefaultPreview(){
+fun EntryListDefaultPreview(){
     PersonalFinanceTheme {
-        EntryList()
+        EntryList(navController = rememberNavController())
     }
 }
