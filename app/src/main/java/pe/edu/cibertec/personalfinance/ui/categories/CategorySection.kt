@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
@@ -58,6 +59,7 @@ fun CategorySection(navController: NavController){
                         Column(modifier = Modifier
                             .weight(4f)
                             .padding(8.dp)
+                            .background(Color.Gray, shape = RoundedCornerShape(20.dp))
                         ) {
                             Row{
                                 Column(modifier = Modifier.background(color =
