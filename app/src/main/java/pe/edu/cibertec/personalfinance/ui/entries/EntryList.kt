@@ -21,13 +21,15 @@ import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import pe.edu.cibertec.personalfinance.data.local.AppDatabase
 import pe.edu.cibertec.personalfinance.data.model.Category
 import pe.edu.cibertec.personalfinance.data.model.Entry
 import pe.edu.cibertec.personalfinance.ui.theme.PersonalFinanceTheme
 
 @Composable
-fun EntryList(){
+fun EntryList(navController: NavController){
     val entries = remember{
         mutableStateOf(listOf<Entry>())
     }
@@ -127,6 +129,6 @@ fun EntryList(){
 @Composable
 fun DefaultPreview(){
     PersonalFinanceTheme {
-        EntryList()
+        EntryList(navController = rememberNavController())
     }
 }

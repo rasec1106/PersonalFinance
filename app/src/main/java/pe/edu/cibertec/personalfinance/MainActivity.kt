@@ -10,6 +10,9 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.compose.rememberNavController
+import pe.edu.cibertec.personalfinance.Login.Models.LoginScreen
+import pe.edu.cibertec.personalfinance.ui.Home.Home
 import pe.edu.cibertec.personalfinance.ui.categories.CategoryList
 import pe.edu.cibertec.personalfinance.ui.entries.EntryList
 import pe.edu.cibertec.personalfinance.ui.theme.PersonalFinanceTheme
@@ -24,7 +27,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
-                    EntryList()
+                    Home()
                 }
             }
         }
@@ -36,10 +39,3 @@ fun Greeting(name: String) {
     Text(text = "Hello $name!")
 }
 
-@Preview(showBackground = true)
-@Composable
-fun DefaultPreview() {
-    PersonalFinanceTheme {
-        EntryList()
-    }
-}
