@@ -7,7 +7,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 object ApiClient {
-    const val API_BASE_URL = "https://personal-finance-dam-2.glitch.me/"
+    const val API_BASE_URL = "https://personal-finance-dam.glitch.me/"
 
     private var retrofit: Retrofit? = null
     private var entryService: EntryService? = null

@@ -49,7 +49,6 @@ fun CategorySection(navController: NavController){
     val currentCategory = remember {
         mutableStateOf<Category?>(navController.previousBackStackEntry?.savedStateHandle?.get("category"))
     }
-//    val remainder = categories.value.size%4
     LazyColumn(){
         items(categories.value.size/4) {
             Card() {
@@ -70,6 +69,7 @@ fun CategorySection(navController: NavController){
                                             shape = CircleShape,
                                             color = category.getCategoryColor()
                                         ), onClick = {
+                                        currentCategory.value = category
                                         navController.currentBackStackEntry?.savedStateHandle?.set(
                                             key = "hasChanged",
                                             value = true
@@ -116,6 +116,7 @@ fun CategorySection(navController: NavController){
                                                 shape = CircleShape,
                                                 color = category.getCategoryColor()
                                             ), onClick = {
+                                            currentCategory.value = category
                                             navController.currentBackStackEntry?.savedStateHandle?.set(
                                                 key = "hasChanged",
                                                 value = true
