@@ -38,7 +38,7 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
-import pe.edu.cibertec.personalfinance.data.Repository.UserRepository
+import pe.edu.cibertec.personalfinance.data.repository.UserRepository
 import pe.edu.cibertec.personalfinance.ui.Route
 import pe.edu.cibertec.personalfinance.ui.util.Result
 

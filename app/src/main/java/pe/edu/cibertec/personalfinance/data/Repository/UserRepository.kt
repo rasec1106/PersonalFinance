@@ -1,4 +1,4 @@
-package pe.edu.cibertec.personalfinance.data.Repository
+package pe.edu.cibertec.personalfinance.data.repository
 
 import pe.edu.cibertec.personalfinance.data.model.User
 import pe.edu.cibertec.personalfinance.data.remote.ApiClient
