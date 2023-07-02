@@ -1,5 +1,6 @@
 package pe.edu.cibertec.personalfinance.data.repository
 
+import android.util.Log
 import pe.edu.cibertec.personalfinance.data.model.User
 import pe.edu.cibertec.personalfinance.data.remote.ApiClient
 import pe.edu.cibertec.personalfinance.data.remote.service.UserService
@@ -10,7 +11,7 @@ import retrofit2.Response
 
 class UserRepository(private val userService: UserService = ApiClient.getUserService()) {
 
-    fun login(username: String, password: String, callback: (Result<Boolean>) -> Unit) {
+    fun login(username: String, password: String, callback: (Result<List<User>>) -> Unit) {
 
 
         userService.login(username, password).enqueue(object : Callback<List<User>> {
@@ -31,7 +32,8 @@ class UserRepository(private val userService: UserService = ApiClient.getUserSer
                     callback(Result.Error("Wrong credentials"))
                     return
                 }
-                callback(Result.Success(true))
+                Log.d("RESPONSEE", response.body()!!.toString())
+                callback(Result.Success(response.body()!!))
             }
 
             override fun onFailure(call: Call<List<User>>, t: Throwable) {
@@ -97,7 +99,7 @@ class UserRepository(private val userService: UserService = ApiClient.getUserSer
             }
 
             userService.createUser(
-                User(username, password,email,firstName, lastName,phone)).enqueue(object : Callback<User> {
+                User(0, username, password,email,firstName, lastName,phone)).enqueue(object : Callback<User> {
                 override fun onResponse(call: Call<User>, response: Response<User>) {
                     if (!response.isSuccessful) {
                         callback(Result.Error("Unsuccessful response"))

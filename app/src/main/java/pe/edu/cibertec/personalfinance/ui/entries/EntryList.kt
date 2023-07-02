@@ -1,5 +1,6 @@
 package pe.edu.cibertec.personalfinance.ui.entries
 
+import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -26,6 +27,8 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import pe.edu.cibertec.personalfinance.data.model.Category
 import pe.edu.cibertec.personalfinance.data.model.Entry
+import pe.edu.cibertec.personalfinance.data.model.User
+import pe.edu.cibertec.personalfinance.data.repository.CategoryRepository
 import pe.edu.cibertec.personalfinance.data.repository.EntryRepository
 import pe.edu.cibertec.personalfinance.ui.Route
 import pe.edu.cibertec.personalfinance.ui.theme.PersonalFinanceTheme
@@ -36,17 +39,38 @@ fun EntryList(navController: NavController){
     val entries = remember{
         mutableStateOf(listOf<Entry>())
     }
-    //entries.value = Entry.populateWithMockData()
-
     val context = LocalContext.current
     var str = remember {
         mutableStateOf("")
     }
+    val user: User? =  navController.previousBackStackEntry?.savedStateHandle?.get<User>("user")
+    navController.currentBackStackEntry?.savedStateHandle?.set(
+        key = "user",
+        value = user
+    )
     val entryRepository = EntryRepository()
-    entryRepository.getEntries(1,context) { result ->
+    entryRepository.getEntries(1,context, 3) { result ->
         if(result is Result.Success){
             entries.value = result.data!!
+            Log.d("ENTRIES", entries.value.toString())
+            Log.d("USER", user.toString())
 
+        } else{
+            str.value = result.message.toString()
+            Log.d("FAILUREEEE", str.value)
+        }
+    }
+    val categories = remember{
+        mutableStateOf(listOf<Category>())
+    }
+    val categoryRepository = CategoryRepository()
+    categoryRepository.getCategories(1,context) {result ->
+        if(result is Result.Success){
+            categories.value = result.data!!
+            navController.currentBackStackEntry?.savedStateHandle?.set(
+                key = "categoryList",
+                value = result.data!!
+            )
         } else{
             str.value = result.message.toString()
         }
@@ -57,7 +81,7 @@ fun EntryList(navController: NavController){
             Button(onClick = {
                 navController.currentBackStackEntry?.savedStateHandle?.set(
                     key = "entry",
-                    value = Entry(0,0.0, Category(1,"Comida","FOOD","#ff0000"),"","",0)
+                    value = Entry(0,0.0, categories.value.first(),"","",0,user!!.id)
                 )
                 navController.navigate(Route.EntryDetail.route)
             }) {
@@ -152,7 +176,7 @@ fun EntryList(navController: NavController){
                                     IconButton(modifier = Modifier.weight(1f), onClick = {
                                         entryRepository.deleteEntry(1, context, entry.id){ result ->
                                             Toast.makeText(context, result.message.toString(), Toast.LENGTH_SHORT).show()
-                                            entryRepository.getEntries(1,context) {result ->
+                                            entryRepository.getEntries(1,context, user!!.id) {result ->
                                                 if(result is Result.Success){
                                                     entries.value = result.data!!
 
