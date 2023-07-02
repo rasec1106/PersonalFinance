@@ -1,15 +1,18 @@
 package pe.edu.cibertec.personalfinance.data.model
 
+import android.os.Parcelable
 import androidx.compose.ui.graphics.Color
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.Ignore
 import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
+import kotlinx.parcelize.Parcelize
 import pe.edu.cibertec.personalfinance.R
 
 
 @Entity(tableName = "category")
+@Parcelize
 data class Category (
 
     @PrimaryKey(autoGenerate = true)
@@ -24,7 +27,7 @@ data class Category (
 
     @ColumnInfo(name = "color")
     val color: String
-){
+): Parcelable {
     fun getCategoryIcon(): Int{
         val map = mapOf(
             "FOOD" to R.drawable.lunch_dinning_foreground,

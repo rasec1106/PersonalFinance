@@ -1,7 +1,6 @@
 package pe.edu.cibertec.personalfinance.ui.entries
 
-import android.util.Log
-import android.widget.Toast
+import android.content.Intent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -12,6 +11,7 @@ import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
@@ -25,15 +25,18 @@ import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import pe.edu.cibertec.personalfinance.data.local.AppDatabase
-import pe.edu.cibertec.personalfinance.data.model.Category
+import androidx.navigation.NavController
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
+import com.google.gson.Gson
 import pe.edu.cibertec.personalfinance.data.model.Entry
 import pe.edu.cibertec.personalfinance.data.repository.EntryRepository
+import pe.edu.cibertec.personalfinance.ui.Route
 import pe.edu.cibertec.personalfinance.ui.theme.PersonalFinanceTheme
 import pe.edu.cibertec.personalfinance.util.Result
 
 @Composable
-fun EntryList(){
+fun EntryList(navController: NavHostController){
     val entries = remember{
         mutableStateOf(listOf<Entry>())
     }
@@ -124,6 +127,22 @@ fun EntryList(){
                                 Text(text = "S/${entry.amount}", fontSize = 16.sp)
                             }
                         }
+                        Column() {
+                            IconButton(modifier = Modifier.weight(1f), onClick = {
+                                navController.currentBackStackEntry?.savedStateHandle?.set(
+                                    key = "entry",
+                                    value = entry
+                                )
+                                navController.navigate(Route.EntryDetail.route)
+                            }) {
+                                Icon(Icons.Filled.Edit,null)
+                            }
+                            IconButton(modifier = Modifier.weight(1f), onClick = {
+
+                            }) {
+                                Icon(Icons.Filled.Delete, null)
+                            }
+                        }
                     }
                 }
             }
@@ -135,6 +154,6 @@ fun EntryList(){
 @Composable
 fun EntryListDefaultPreview(){
     PersonalFinanceTheme {
-        EntryList()
+        EntryList(navController = rememberNavController())
     }
 }

@@ -1,11 +1,12 @@
 package pe.edu.cibertec.personalfinance.ui.entries
 
+import android.content.Intent
+import android.os.Build
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.Button
 import androidx.compose.material.Text
 import androidx.compose.material.TextField
@@ -16,6 +17,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.rememberNavController
 import pe.edu.cibertec.personalfinance.data.model.Category
 import pe.edu.cibertec.personalfinance.data.model.Entry
 import pe.edu.cibertec.personalfinance.data.repository.EntryRepository
@@ -23,7 +27,7 @@ import pe.edu.cibertec.personalfinance.ui.theme.PersonalFinanceTheme
 import pe.edu.cibertec.personalfinance.util.Result
 
 @Composable
-fun NewEntry(){
+fun EntryDetail(navController: NavController){
     val amount = remember {
         mutableStateOf("")
     }
@@ -38,7 +42,11 @@ fun NewEntry(){
 
     val entryRepository = EntryRepository()
     val context = LocalContext.current
+
+    val test = navController.previousBackStackEntry?.savedStateHandle?.get<Entry>("entry").toString()
+    
     Column {
+        Text(text = test.toString())
         TextField(
             modifier = Modifier.fillMaxWidth(),
             label = { Text(text = "Cantidad") },
@@ -87,6 +95,6 @@ fun NewEntry(){
 @Composable
 fun NewEntryDefaultPreview(){
     PersonalFinanceTheme {
-        NewEntry()
+        EntryDetail(navController = rememberNavController())
     }
 }

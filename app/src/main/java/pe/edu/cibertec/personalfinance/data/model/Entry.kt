@@ -1,14 +1,17 @@
 package pe.edu.cibertec.personalfinance.data.model
 
+import android.os.Parcelable
 import androidx.annotation.NonNull
 import androidx.room.ColumnInfo
 import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
+import kotlinx.parcelize.Parcelize
 
 
 @Entity(tableName = "entry")
+@Parcelize
 data class Entry (
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "idEntry")
@@ -29,7 +32,7 @@ data class Entry (
 
     @ColumnInfo(name = "type")
     val type: Int
-){
+): Parcelable {
 
     companion object{
         fun populateWithMockData(): List<Entry>{
