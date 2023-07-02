@@ -23,30 +23,32 @@ import androidx.navigation.compose.rememberNavController
 import pe.edu.cibertec.personalfinance.data.model.Category
 import pe.edu.cibertec.personalfinance.data.model.Entry
 import pe.edu.cibertec.personalfinance.data.repository.EntryRepository
+import pe.edu.cibertec.personalfinance.ui.Route
 import pe.edu.cibertec.personalfinance.ui.theme.PersonalFinanceTheme
 import pe.edu.cibertec.personalfinance.util.Result
 
 @Composable
 fun EntryDetail(navController: NavController){
+    val selectedEntry: Entry? = navController.previousBackStackEntry?.savedStateHandle?.get<Entry>("entry")
+
     val amount = remember {
-        mutableStateOf("")
+        mutableStateOf(selectedEntry?.amount.toString() ?: "")
     }
     val date = remember {
-        mutableStateOf("")
+        mutableStateOf(selectedEntry?.date.toString() ?: "")
     }
     val comment = remember {
-        mutableStateOf("")
+        mutableStateOf(selectedEntry?.comment.toString() ?: "")
     }
     val type = 0
-    val category = Category(1,"Comida","FOOD","#ff0000")
+    val category = selectedEntry?.category ?: Category(1,"Comida","FOOD","#ff0000")
 
     val entryRepository = EntryRepository()
     val context = LocalContext.current
 
-    val test = navController.previousBackStackEntry?.savedStateHandle?.get<Entry>("entry").toString()
+
     
     Column {
-        Text(text = test.toString())
         TextField(
             modifier = Modifier.fillMaxWidth(),
             label = { Text(text = "Cantidad") },
@@ -76,17 +78,49 @@ fun EntryDetail(navController: NavController){
                 .fillMaxWidth()
                 .padding(8.dp, 16.dp, 8.dp, 0.dp),
             onClick = {
-                val entry = Entry(0,amount.value.toDouble(),category,date.value,comment.value,type)
-                entryRepository.createEntry(1, context, entry){ result ->
-                    if(result is Result.Success){
-                        Toast.makeText(context, "CREADO", Toast.LENGTH_SHORT).show()
-                    }else{
-                        Toast.makeText(context, result.message.toString(), Toast.LENGTH_SHORT).show()
+                val entry = Entry(
+                    selectedEntry?.id ?: 0,
+                    amount.value.toDouble(),
+                    category,
+                    date.value,
+                    comment.value,
+                    type
+                )
+                if(entry.id == 0){
+                    entryRepository.createEntry(1, context, entry){ result ->
+                        if(result is Result.Success){
+                            Toast.makeText(context, result.message.toString(), Toast.LENGTH_SHORT).show()
+                            navController.navigate(Route.Entries.route)
+                        }else{
+                            Toast.makeText(context, result.message.toString(), Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                } else{
+                    entryRepository.updateEntry(1, context, entry, entry.id){ result ->
+                        if(result is Result.Success){
+                            Toast.makeText(context, result.message.toString(), Toast.LENGTH_SHORT).show()
+                            navController.navigate(Route.Entries.route)
+                        }else{
+                            Toast.makeText(context, result.message.toString(), Toast.LENGTH_SHORT).show()
+                        }
                     }
                 }
             }
         ) {
-            Text(text = "Sign in")
+            Text(text =
+                if(selectedEntry?.id != 0) "Actualizar entrada"
+                else "Crear entrada"
+            )
+        }
+        Button(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(8.dp, 16.dp, 8.dp, 0.dp),
+            onClick = {
+                navController.navigate(Route.Entries.route)
+            }
+        ) {
+            Text(text = "Cancelar")
         }
     }
 }

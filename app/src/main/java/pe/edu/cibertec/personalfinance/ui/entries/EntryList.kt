@@ -1,15 +1,13 @@
 package pe.edu.cibertec.personalfinance.ui.entries
 
 import android.content.Intent
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.Card
-import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
@@ -29,6 +27,7 @@ import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.google.gson.Gson
+import pe.edu.cibertec.personalfinance.data.model.Category
 import pe.edu.cibertec.personalfinance.data.model.Entry
 import pe.edu.cibertec.personalfinance.data.repository.EntryRepository
 import pe.edu.cibertec.personalfinance.ui.Route
@@ -54,14 +53,20 @@ fun EntryList(navController: NavHostController){
         } else{
             str.value = result.message.toString()
         }
-
     }
 
     LazyColumn(){
-        item {
-        Text(text = "S/${str.value}", fontSize = 16.sp)
+        item{
+            Button(onClick = {
+                navController.currentBackStackEntry?.savedStateHandle?.set(
+                    key = "entry",
+                    value = Entry(0,0.0, Category(1,"Comida","FOOD","#ff0000"),"","",0)
+                )
+                navController.navigate(Route.EntryDetail.route)
+            }) {
+                Text(text = "Nueva Entrada")
+            }
         }
-
         items(entries.value) {entry ->
             Card(
                 modifier = Modifier
@@ -138,7 +143,17 @@ fun EntryList(navController: NavHostController){
                                 Icon(Icons.Filled.Edit,null)
                             }
                             IconButton(modifier = Modifier.weight(1f), onClick = {
+                                entryRepository.deleteEntry(1, context, entry.id){ result ->
+                                    Toast.makeText(context, result.message.toString(), Toast.LENGTH_SHORT).show()
+                                    entryRepository.getEntries(1,context) {result ->
+                                        if(result is Result.Success){
+                                            entries.value = result.data!!
 
+                                        } else{
+                                            str.value = result.message.toString()
+                                        }
+                                    }
+                                }
                             }) {
                                 Icon(Icons.Filled.Delete, null)
                             }

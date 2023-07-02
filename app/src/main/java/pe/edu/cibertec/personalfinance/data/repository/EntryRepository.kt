@@ -22,6 +22,12 @@ class EntryRepository (
     fun createEntry(type: Int, context: Context, entry: Entry, callback: (Result<Entry>) -> Unit){
         createEntryRemote(entry, callback)
     }
+    fun updateEntry(type: Int, context: Context, entry: Entry, id: Int, callback: (Result<Entry>) -> Unit){
+        updateEntryRemote(entry, id, callback)
+    }
+    fun deleteEntry(type: Int, context: Context, id: Int, callback: (Result<Entry>) -> Unit){
+        deleteEntryRemote(id, callback)
+    }
     private fun getEntriesRemote(callback: (Result<List<Entry>>) -> Unit){
         entryService.getEntries().enqueue(object: Callback<List<Entry>> {
             override fun onResponse(call: Call<List<Entry>>, response: Response<List<Entry>>) {
@@ -45,15 +51,46 @@ class EntryRepository (
         entryService.createEntry(entry).enqueue(object: Callback<Entry>{
             override fun onResponse(call: Call<Entry>, response: Response<Entry>) {
                 if(response.isSuccessful && response.body() != null){
-                    callback(Result.Success(entry, "Entry created correctly"))
+                    callback(Result.Success(response.body()!!, "Entry created correctly"))
                 }else{
-                    Log.d("ERROR CREATE", response.toString())
                     callback(Result.Error("Error creating entry"))
                 }
             }
 
             override fun onFailure(call: Call<Entry>, t: Throwable) {
                 callback(Result.Error("Create entry not available"))
+            }
+
+        })
+    }
+    private fun updateEntryRemote(entry: Entry, id: Int, callback: (Result<Entry>) -> Unit){
+        entryService.updateEntry(entry, id).enqueue(object: Callback<Entry>{
+            override fun onResponse(call: Call<Entry>, response: Response<Entry>) {
+                if(response.isSuccessful && response.body() != null){
+                    callback(Result.Success(response.body()!!, "Entry updated correctly"))
+                }else{
+                    callback(Result.Error("Error updating entry"))
+                }
+            }
+
+            override fun onFailure(call: Call<Entry>, t: Throwable) {
+                callback(Result.Error("Update entry not available"))
+            }
+
+        })
+    }
+    private fun deleteEntryRemote(id: Int, callback: (Result<Entry>) -> Unit){
+        entryService.deleteEntry(id).enqueue(object: Callback<Entry>{
+            override fun onResponse(call: Call<Entry>, response: Response<Entry>) {
+                if(response.isSuccessful && response.body() != null){
+                    callback(Result.Success(response.body()!!, "Entry deleted correctly"))
+                }else{
+                    callback(Result.Error("Error deleting entry"))
+                }
+            }
+
+            override fun onFailure(call: Call<Entry>, t: Throwable) {
+                callback(Result.Error("Delete entry not available"))
             }
 
         })
