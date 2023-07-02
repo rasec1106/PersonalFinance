@@ -46,7 +46,8 @@ import pe.edu.cibertec.personalfinance.ui.util.Result
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LoginScreen(navController: NavController){
-    HeaderImagePrueba()
+
+    FondoImage()
     Box(
         Modifier
             .fillMaxSize()
@@ -129,7 +130,7 @@ fun LoginScreen(navController: NavController){
                     modifier = Modifier.clickable { }.align(Alignment.End),
                     fontSize = 12.sp,
                     fontWeight = FontWeight.Bold,
-                    color = Color(0xA9020202)
+                    color = Color.White
 
                 )
                 Spacer(modifier=Modifier.padding(16.dp))
@@ -327,15 +328,15 @@ fun Login(modifier: Modifier,navController: NavController) {
 @Composable
 fun HeaderImageL(modifier: Modifier) {
     Image(painter = painterResource(
-        id = R.drawable.logo),
+        id = R.drawable.logoapp),
         contentDescription = "Header",
-        modifier =modifier)
+        modifier =modifier.padding(60.dp))
 }
 
 @Composable
-fun HeaderImagePrueba() {
+fun FondoImage() {
     Image(painter = painterResource(
-        id = R.drawable.headerprueba),
+        id = R.drawable.fondito3),
         contentDescription = "Header",
 
         modifier = Modifier.fillMaxSize(),

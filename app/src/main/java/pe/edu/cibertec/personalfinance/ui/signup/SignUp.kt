@@ -30,9 +30,11 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.input.VisualTransformation
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import pe.edu.cibertec.personalfinance.data.repository.UserRepository
@@ -43,7 +45,7 @@ import pe.edu.cibertec.personalfinance.ui.util.Result
 @Composable
 fun SignUpScreen(navController: NavController){
 
-    HeaderImagePrueba()
+    FondoImage()
 
 
     Column(
@@ -72,6 +74,15 @@ fun SignUpScreen(navController: NavController){
 
                 Spacer(modifier = Modifier.padding(16.dp))
 
+                Text(text="Registrate",
+                    fontSize=35.sp,
+                modifier=Modifier
+                    .fillMaxWidth()
+                    .padding(8.dp, 0.dp, 8.dp, 0.dp),
+                    fontWeight=FontWeight.Bold,
+                    color = Color.White
+                    )
+            Spacer(modifier = Modifier.padding(16.dp))
                 /*username field*/
 
                 TextField(
@@ -79,7 +90,7 @@ fun SignUpScreen(navController: NavController){
                         .fillMaxWidth()
                         .padding(8.dp, 0.dp, 8.dp, 0.dp)
                         .background(Color.White, shape = RoundedCornerShape(20.dp))
-                        .border(2.dp,Color.Gray,shape = RoundedCornerShape(20.dp)),
+                        .border(2.dp, Color.Gray, shape = RoundedCornerShape(20.dp)),
 
                     placeholder = { Text(text = "Usuario") },
                     value = user.value,
@@ -93,7 +104,7 @@ fun SignUpScreen(navController: NavController){
                     shape = RoundedCornerShape(20.dp)
                 )
 
-                Spacer(modifier = Modifier.padding(16.dp))
+                Spacer(modifier = Modifier.padding(8.dp))
 
                 /*----------PASWORD FIELD AND SHOWPASSWORD FIELD------*/
 
@@ -102,7 +113,7 @@ fun SignUpScreen(navController: NavController){
                         .fillMaxWidth()
                         .padding(8.dp, 0.dp, 8.dp, 0.dp)
                         .background(Color.White, shape = RoundedCornerShape(20.dp))
-                        .border(2.dp,Color.Gray,shape = RoundedCornerShape(20.dp)),
+                        .border(2.dp, Color.Gray, shape = RoundedCornerShape(20.dp)),
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
                     placeholder = { Text(text = "Password") },
                     value = password.value,
@@ -129,7 +140,7 @@ fun SignUpScreen(navController: NavController){
                         }
                     }
                 )
-                Spacer(modifier = Modifier.padding(10.dp))
+                Spacer(modifier = Modifier.padding(8.dp))
 
                 /*---CONFIRM PASSWORD---*/
                 TextField(
@@ -137,7 +148,7 @@ fun SignUpScreen(navController: NavController){
                         .fillMaxWidth()
                         .padding(8.dp, 0.dp, 8.dp, 0.dp)
                         .background(Color.White, shape = RoundedCornerShape(20.dp))
-                        .border(2.dp,Color.Gray,shape = RoundedCornerShape(20.dp)),
+                        .border(2.dp, Color.Gray, shape = RoundedCornerShape(20.dp)),
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
                     placeholder = { Text(text = "Confirmar Password") },
                     value = confirmPassword.value,
@@ -176,7 +187,7 @@ fun SignUpScreen(navController: NavController){
                         .fillMaxWidth()
                         .padding(8.dp, 0.dp, 8.dp, 0.dp)
                         .background(Color.White, shape = RoundedCornerShape(20.dp))
-                        .border(2.dp,Color.Gray,shape = RoundedCornerShape(20.dp)),
+                        .border(2.dp, Color.Gray, shape = RoundedCornerShape(20.dp)),
                     placeholder = { Text(text = "Nombres") },
                     value = firstName.value,
                     onValueChange = {firstName.value = it},
@@ -197,7 +208,7 @@ fun SignUpScreen(navController: NavController){
                         .fillMaxWidth()
                         .padding(8.dp, 0.dp, 8.dp, 0.dp)
                         .background(Color.White, shape = RoundedCornerShape(20.dp))
-                        .border(2.dp,Color.Gray,shape = RoundedCornerShape(20.dp)),
+                        .border(2.dp, Color.Gray, shape = RoundedCornerShape(20.dp)),
                     placeholder = { Text(text = "Apellidos") },
                     value = lastName.value,
                     onValueChange = {lastName.value = it},
@@ -210,7 +221,7 @@ fun SignUpScreen(navController: NavController){
                     shape = RoundedCornerShape(20.dp)
                 )
 
-                Spacer(modifier = Modifier.padding(16.dp))
+                Spacer(modifier = Modifier.padding(8.dp))
 
                 /*correo field*/
 
@@ -219,7 +230,7 @@ fun SignUpScreen(navController: NavController){
                         .fillMaxWidth()
                         .padding(8.dp, 0.dp, 8.dp, 0.dp)
                         .background(Color.White, shape = RoundedCornerShape(20.dp))
-                        .border(2.dp,Color.Gray,shape = RoundedCornerShape(20.dp)),
+                        .border(2.dp, Color.Gray, shape = RoundedCornerShape(20.dp)),
                     placeholder = { Text(text = "Correo") },
                     value = email.value,
                     onValueChange = {email.value = it},
@@ -232,7 +243,7 @@ fun SignUpScreen(navController: NavController){
                     shape = RoundedCornerShape(20.dp)
                 )
 
-                Spacer(modifier = Modifier.padding(16.dp))
+                Spacer(modifier = Modifier.padding(8.dp))
 
                 /*numero telefono field*/
 
@@ -241,7 +252,7 @@ fun SignUpScreen(navController: NavController){
                         .fillMaxWidth()
                         .padding(8.dp, 0.dp, 8.dp, 0.dp,)
                         .background(Color.White, shape = RoundedCornerShape(20.dp))
-                        .border(2.dp,Color.Gray,shape = RoundedCornerShape(20.dp)),
+                        .border(2.dp, Color.Gray, shape = RoundedCornerShape(20.dp)),
 
                     placeholder = { Text(text = "Telefono") },
                     value = phone.value,
@@ -268,40 +279,63 @@ fun SignUpScreen(navController: NavController){
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(48.dp)
-                        .border(2.dp,Color.Transparent,shape = RoundedCornerShape(15.dp)),
+                        .border(2.dp, Color.Transparent, shape = RoundedCornerShape(15.dp)),
                     colors=ButtonDefaults.buttonColors(
                         backgroundColor = Color(0xAB0389FF),
                         disabledBackgroundColor = Color(0xFF586DF7),
                         contentColor = androidx.compose.ui.graphics.Color.White,
                         disabledContentColor = androidx.compose.ui.graphics.Color.White),
                     shape = RoundedCornerShape(15.dp),
+                    
                     onClick = {
-                        userRepository.createUser(
-                            user.value.text,
-                            password.value.text,
-                            confirmPassword.value.text,
-                            email.value.text,
-                            firstName.value.text,
-                            lastName.value.text,
-                            phone.value.text
-
-                        ) { result ->
-                            if (result is Result.Success) {
-                                navController.navigate(Route.Login.route)
-                            } else {
-                                Toast.makeText(context, result.message.toString(), Toast.LENGTH_SHORT)
-                                    .show()
-                            }
+                        fun validarInput():String{
+                            if (user.value.text.isEmpty())return "Campo usuario vacio"
+                            if (password.value.text.isEmpty())return "Campo password vacio"
+                            if (confirmPassword.value.text.isEmpty())return "Campo confirm password vacio"
+                            if (firstName.value.text.isEmpty())return "Campo nombres vacio"
+                            if (lastName.value.text.isEmpty())return "Campo apellidos vacio"
+                            if (email.value.text.isEmpty())return "Campo e-mail vacio"
+                            if (phone.value.text.isEmpty())return "Campo telefono vacio"
+                            return ""
                         }
+                        val mensaje=validarInput()
+                        if(mensaje==""){
+                            userRepository.createUser(
+                                user.value.text,
+                                password.value.text,
+                                confirmPassword.value.text,
+                                email.value.text,
+                                firstName.value.text,
+                                lastName.value.text,
+                                phone.value.text
+
+                            )
+                            { result ->
+                                if (result is Result.Success) {
+                                    navController.navigate(Route.Login.route)
+                                } else {
+                                    Toast.makeText(context, result.message.toString(), Toast.LENGTH_SHORT)
+                                        .show()
+                                }
+                            }
+
+                        }else{
+                            Toast.makeText(context,mensaje,Toast.LENGTH_SHORT)
+                                .show()
+                        }
+
 
                     }
                 ) {Text(text = "Registrarse")
                 }
 
             }
+
         }
 
     }
+
+
 
     
 
@@ -313,14 +347,6 @@ fun SignUpScreen(navController: NavController){
 
 
 
-
-@Composable
-fun HeaderImageS(modifier: Modifier) {
-    Image(painter = painterResource(
-        id = R.drawable.logo),
-        contentDescription = "Header",
-        modifier =modifier)
-}
 
 
 
