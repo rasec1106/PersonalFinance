@@ -2,8 +2,10 @@ package pe.edu.cibertec.personalfinance.Login.Models
 
 
 
+import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
@@ -38,6 +40,7 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import pe.edu.cibertec.personalfinance.data.model.User
 import pe.edu.cibertec.personalfinance.data.repository.UserRepository
 import pe.edu.cibertec.personalfinance.ui.Route
 import pe.edu.cibertec.personalfinance.ui.util.Result
@@ -45,7 +48,8 @@ import pe.edu.cibertec.personalfinance.ui.util.Result
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LoginScreen(navController: NavController){
-    HeaderImagePrueba()
+
+    FondoImage()
     Box(
         Modifier
             .fillMaxSize()
@@ -58,6 +62,7 @@ fun LoginScreen(navController: NavController){
             val user = remember{ mutableStateOf(TextFieldValue())}
             val password = remember{ mutableStateOf(TextFieldValue())}
             val showPassword = remember { mutableStateOf((false))}
+            var userList: List<User>
 
 
             Column() {
@@ -69,8 +74,10 @@ fun LoginScreen(navController: NavController){
                 TextField(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(8.dp, 0.dp, 8.dp, 0.dp),
-                    placeholder = { Text(text = "Usuario") },
+                        .padding(8.dp, 0.dp, 8.dp, 0.dp)
+                        .background(Color.White, shape = RoundedCornerShape(20.dp))
+                        .border(2.dp,Color.Gray,shape = RoundedCornerShape(20.dp)),
+                    placeholder = { Text(text = "Username") },
                     value = user.value,
                     onValueChange = {user.value = it},
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
@@ -89,7 +96,9 @@ fun LoginScreen(navController: NavController){
                 TextField(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(8.dp, 0.dp, 8.dp, 0.dp),
+                        .padding(8.dp, 0.dp, 8.dp, 0.dp)
+                        .background(Color.White, shape = RoundedCornerShape(20.dp))
+                        .border(2.dp,Color.Gray,shape = RoundedCornerShape(20.dp)),
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
                     placeholder = { Text(text = "Password") },
                     value = password.value,
@@ -124,7 +133,7 @@ fun LoginScreen(navController: NavController){
                     modifier = Modifier.clickable { }.align(Alignment.End),
                     fontSize = 12.sp,
                     fontWeight = FontWeight.Bold,
-                    color = Color(0xA9020202)
+                    color = Color.White
 
                 )
                 Spacer(modifier=Modifier.padding(16.dp))
@@ -133,7 +142,8 @@ fun LoginScreen(navController: NavController){
                 Button(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(48.dp),
+                        .height(48.dp)
+                        .border(2.dp,Color.Transparent,shape = RoundedCornerShape(15.dp)),
                     colors=ButtonDefaults.buttonColors(
                         backgroundColor = Color(0xAB0389FF),
 
@@ -143,6 +153,12 @@ fun LoginScreen(navController: NavController){
                     onClick = {
                         userRepository.login(user.value.text, password.value.text) { result ->
                             if (result is Result.Success) {
+                                userList = result.data!!
+                                Log.d("USERLIST", userList.toString())
+                                navController.currentBackStackEntry?.savedStateHandle?.set(
+                                    key = "user",
+                                    value = userList!!.first()
+                                )
                                 navController.navigate(Route.Entries.route)
                             } else {
                                 Toast.makeText(context, result.message.toString(), Toast.LENGTH_SHORT)
@@ -159,7 +175,8 @@ fun LoginScreen(navController: NavController){
                 Button(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(48.dp),
+                        .height(48.dp)
+                        .border(2.dp,Color.Transparent,shape = RoundedCornerShape(15.dp)),
                     colors=ButtonDefaults.buttonColors(
                         backgroundColor = Color(0xAB0389FF),
                         disabledBackgroundColor = Color(0xFF586DF7),
@@ -168,7 +185,6 @@ fun LoginScreen(navController: NavController){
                     shape = RoundedCornerShape(15.dp),
                     onClick = {
                         navController.navigate(Route.SignUp.route)
-
                     }
 
                 ) {
@@ -320,15 +336,15 @@ fun Login(modifier: Modifier,navController: NavController) {
 @Composable
 fun HeaderImageL(modifier: Modifier) {
     Image(painter = painterResource(
-        id = R.drawable.logo),
+        id = R.drawable.logoapp),
         contentDescription = "Header",
-        modifier =modifier)
+        modifier =modifier.padding(60.dp))
 }
 
 @Composable
-fun HeaderImagePrueba() {
+fun FondoImage() {
     Image(painter = painterResource(
-        id = R.drawable.headerprueba),
+        id = R.drawable.fondito3),
         contentDescription = "Header",
 
         modifier = Modifier.fillMaxSize(),

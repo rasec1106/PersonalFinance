@@ -18,9 +18,11 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import pe.edu.cibertec.personalfinance.data.model.Category
 import pe.edu.cibertec.personalfinance.data.model.Entry
+import pe.edu.cibertec.personalfinance.data.model.User
 import pe.edu.cibertec.personalfinance.data.repository.EntryRepository
 import pe.edu.cibertec.personalfinance.ui.Route
 import pe.edu.cibertec.personalfinance.ui.categories.CategoryList
+import pe.edu.cibertec.personalfinance.ui.categories.CategorySection
 import pe.edu.cibertec.personalfinance.ui.theme.PersonalFinanceTheme
 import pe.edu.cibertec.personalfinance.util.Result
 
@@ -42,8 +44,8 @@ fun EntryDetail(navController: NavController){
     val type = 0
     val entryRepository = EntryRepository()
     val context = LocalContext.current
-
-    navController.previousBackStackEntry?.savedStateHandle?.set<Category>(
+    val user: User? = navController.currentBackStackEntry?.savedStateHandle?.get("user")
+    navController.currentBackStackEntry?.savedStateHandle?.set<Category>(
         key = "category",
         value = selectedCategory.value
     )
@@ -74,7 +76,7 @@ fun EntryDetail(navController: NavController){
             }
         )
         Text(text = "Categoria")
-        CategoryList(navController = navController)
+        CategorySection(navController = navController)
         Button(
             modifier = Modifier
                 .fillMaxWidth()
@@ -83,13 +85,15 @@ fun EntryDetail(navController: NavController){
                 val hasChanged: Boolean? = navController.currentBackStackEntry?.savedStateHandle?.get<Boolean>("hasChanged")
                 if(hasChanged!!)
                     selectedCategory.value = navController.currentBackStackEntry?.savedStateHandle?.get<Category>("category")
+
                 val entry = Entry(
                     selectedEntry?.id ?: 0,
                     amount.value.toDouble(),
                     selectedCategory.value!!,
                     date.value,
                     comment.value,
-                    type
+                    type,
+                    user!!.id
                 )
                 if(entry.id == 0){
                     entryRepository.createEntry(1, context, entry){ result ->

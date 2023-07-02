@@ -1,11 +1,15 @@
 package pe.edu.cibertec.personalfinance.data.model
 
-class User (
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
+
+@Parcelize
+data class User (
+    val id: Int,
     val username: String,
     val password: String,
-    /*cambialo a ingles porfa*/
-    val correo: String,
-    val nombres:String,
-    val apellidos:String,
-    val numerotelefono:String
-)
+    val email: String,
+    val firstName:String,
+    val lastName:String,
+    val phone:String
+): Parcelable

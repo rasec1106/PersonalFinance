@@ -9,10 +9,13 @@ import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.PUT
 import retrofit2.http.Path
+import retrofit2.http.Query
 
 interface EntryService {
     @GET("entries")
     fun getEntries(): Call<List<Entry>>
+    @GET("entries")
+    fun getEntriesByUserId(@Query("userId") id: Int): Call<List<Entry>>
     @POST("entries")
     fun createEntry(@Body entry: Entry): Call<Entry>
     @PUT("entries/{id}")
