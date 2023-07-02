@@ -26,6 +26,7 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import pe.edu.cibertec.personalfinance.data.model.Category
 import pe.edu.cibertec.personalfinance.data.model.Entry
+import pe.edu.cibertec.personalfinance.data.repository.CategoryRepository
 import pe.edu.cibertec.personalfinance.data.repository.EntryRepository
 import pe.edu.cibertec.personalfinance.ui.Route
 import pe.edu.cibertec.personalfinance.ui.theme.PersonalFinanceTheme
@@ -36,8 +37,6 @@ fun EntryList(navController: NavController){
     val entries = remember{
         mutableStateOf(listOf<Entry>())
     }
-    //entries.value = Entry.populateWithMockData()
-
     val context = LocalContext.current
     var str = remember {
         mutableStateOf("")
@@ -46,7 +45,21 @@ fun EntryList(navController: NavController){
     entryRepository.getEntries(1,context) { result ->
         if(result is Result.Success){
             entries.value = result.data!!
-
+        } else{
+            str.value = result.message.toString()
+        }
+    }
+    val categories = remember{
+        mutableStateOf(listOf<Category>())
+    }
+    val categoryRepository = CategoryRepository()
+    categoryRepository.getCategories(1,context) {result ->
+        if(result is Result.Success){
+            categories.value = result.data!!
+            navController.currentBackStackEntry?.savedStateHandle?.set(
+                key = "categoryList",
+                value = result.data!!
+            )
         } else{
             str.value = result.message.toString()
         }
@@ -57,7 +70,7 @@ fun EntryList(navController: NavController){
             Button(onClick = {
                 navController.currentBackStackEntry?.savedStateHandle?.set(
                     key = "entry",
-                    value = Entry(0,0.0, Category(1,"Comida","FOOD","#ff0000"),"","",0)
+                    value = Entry(0,0.0, categories.value.first(),"","",0)
                 )
                 navController.navigate(Route.EntryDetail.route)
             }) {

@@ -27,32 +27,18 @@ import pe.edu.cibertec.personalfinance.util.Result
 
 @Composable
 fun CategorySection(navController: NavController){
-    val categories = remember{
-        mutableStateOf(listOf<Category>())
-    }
-    val context = LocalContext.current
-    var str = remember {
-        mutableStateOf("")
-    }
-    val categoryRepository = CategoryRepository()
-    categoryRepository.getCategories(1,context) {result ->
-        if(result is Result.Success){
-            categories.value = result.data!!
-        } else{
-            str.value = result.message.toString()
-        }
-    }
+    val categories: List<Category>? = navController.previousBackStackEntry?.savedStateHandle?.get("categoryList")
     navController.currentBackStackEntry?.savedStateHandle?.set(
         key = "hasChanged",
         value = false
     )
     val currentCategory = remember {
-        mutableStateOf<Category?>(navController.previousBackStackEntry?.savedStateHandle?.get("category"))
+        mutableStateOf<Category?>(navController.currentBackStackEntry?.savedStateHandle?.get("category"))
     }
     LazyColumn(){
-        items(categories.value.size/4) {
+        items(categories!!.size/4) {
             Card() {
-                val slicedArray = categories.value.slice(it*4..it*4+3)
+                val slicedArray = categories!!.slice(it*4..it*4+3)
                 Row (){
                     slicedArray.forEach { category->
                         Column(modifier = Modifier
@@ -97,10 +83,10 @@ fun CategorySection(navController: NavController){
                 }
             }
         }
-        if(categories.value.size%4 != 0){
+        if(categories!!.size%4 != 0){
             item{
                 Card() {
-                    val slicedArray = categories.value.takeLast(categories.value.size%4)
+                    val slicedArray = categories!!.takeLast(categories!!.size%4)
                     Row (){
                         slicedArray.forEach { category->
                             Column(modifier = Modifier
@@ -141,7 +127,7 @@ fun CategorySection(navController: NavController){
                                 }
                             }
                         }
-                        repeat(4-categories.value.size%4){
+                        repeat(4-categories!!.size%4){
                             Box(modifier = Modifier.weight(4f)){}
                         }
                     }
