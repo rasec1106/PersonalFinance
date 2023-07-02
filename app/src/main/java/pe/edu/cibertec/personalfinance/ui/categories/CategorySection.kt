@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
@@ -39,13 +40,13 @@ fun CategorySection(navController: NavController){
         items(categories!!.size/4) {
             Card() {
                 val slicedArray = categories!!.slice(it*4..it*4+3)
-                Row (){
+                Row {
                     slicedArray.forEach { category->
                         Column(modifier = Modifier
                             .weight(4f)
                             .padding(8.dp)
                         ) {
-                            Row{
+                            Row(){
                                 Column(modifier = Modifier.background(color =
                                 if(currentCategory.value?.id == category.id) Color.LightGray
                                 else Color.White
@@ -87,7 +88,7 @@ fun CategorySection(navController: NavController){
             item{
                 Card() {
                     val slicedArray = categories!!.takeLast(categories!!.size%4)
-                    Row (){
+                    Row {
                         slicedArray.forEach { category->
                             Column(modifier = Modifier
                                 .weight(4f)

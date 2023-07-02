@@ -1,21 +1,31 @@
 package pe.edu.cibertec.personalfinance.ui.entries
 
 import android.widget.Toast
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Button
+import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Text
 import androidx.compose.material.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import pe.edu.cibertec.personalfinance.Login.Models.FondoImage
 import pe.edu.cibertec.personalfinance.data.model.Category
 import pe.edu.cibertec.personalfinance.data.model.Entry
 import pe.edu.cibertec.personalfinance.data.model.User
@@ -28,6 +38,7 @@ import pe.edu.cibertec.personalfinance.util.Result
 
 @Composable
 fun EntryDetail(navController: NavController){
+    FondoImage()
     val selectedEntry: Entry? = navController.previousBackStackEntry?.savedStateHandle?.get<Entry>("entry")
     val selectedCategory = remember {
         mutableStateOf(selectedEntry?.category)
@@ -49,38 +60,82 @@ fun EntryDetail(navController: NavController){
         key = "category",
         value = selectedCategory.value
     )
-    
+
+
     Column {
+        Spacer(modifier = Modifier.padding(25.dp))
         TextField(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier
+
+                .fillMaxWidth()
+                .padding(8.dp, 0.dp, 8.dp, 0.dp)
+                .background(color = Color.White, shape = RoundedCornerShape(20.dp)),
             label = { Text(text = "Cantidad") },
             value = amount.value,
             onValueChange = {
                 amount.value = it
-            }
+            },
+            shape = RoundedCornerShape(20.dp)
         )
+        Spacer(modifier = Modifier.padding(15.dp))
         TextField(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(8.dp, 0.dp, 8.dp, 0.dp)
+                .background(color = Color.White, shape = RoundedCornerShape(20.dp)),
             label = { Text(text = "Fecha") },
             value = date.value,
             onValueChange = {
                 date.value = it
-            }
+            },
+            shape = RoundedCornerShape(20.dp)
+
         )
+        Spacer(modifier = Modifier.padding(12.dp))
         TextField(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(8.dp, 0.dp, 8.dp, 0.dp)
+                .background(color = Color.White, shape = RoundedCornerShape(20.dp)),
             label = { Text(text = "Comentario") },
             value = comment.value,
             onValueChange = {
                 comment.value = it
-            }
+            },
+            shape = RoundedCornerShape(20.dp)
         )
-        Text(text = "Categoria")
-        CategorySection(navController = navController)
+        Spacer(modifier = Modifier.padding(12.dp))
+
+        Box(modifier = Modifier.padding(10.dp)){
+            Text(modifier = Modifier
+                .background(color = Color.White, shape = RoundedCornerShape(20.dp))
+                .border(
+                    1.dp,
+                    shape = RoundedCornerShape(20.dp),
+                    color = Color.White
+                )
+                .padding(12.dp, 8.dp, 12.dp, 8.dp),
+                fontSize = 16.sp,
+                text = "Elige la categoria")
+        }
+
+        Box(modifier = Modifier
+            .background(Color.Transparent, shape = RoundedCornerShape(20.dp))
+            .padding(8.dp, 0.dp, 8.dp, 0.dp)
+            ){
+            CategorySection(navController = navController)
+        }
+        Spacer(modifier=Modifier.padding(5.dp))
         Button(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(8.dp, 16.dp, 8.dp, 0.dp),
+                .height(48.dp),
+            colors= ButtonDefaults.buttonColors(
+                backgroundColor = Color(0xAB0389FF),
+                disabledBackgroundColor = Color(0xFF586DF7),
+                contentColor = androidx.compose.ui.graphics.Color.White,
+                disabledContentColor = androidx.compose.ui.graphics.Color.White),
+            shape = RoundedCornerShape(15.dp),
             onClick = {
                 val hasChanged: Boolean? = navController.currentBackStackEntry?.savedStateHandle?.get<Boolean>("hasChanged")
                 if(hasChanged!!)
@@ -121,10 +176,17 @@ fun EntryDetail(navController: NavController){
                 else "Crear entrada"
             )
         }
+        Spacer(modifier=Modifier.padding(2.dp))
         Button(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(8.dp, 16.dp, 8.dp, 0.dp),
+                .height(48.dp),
+            colors=ButtonDefaults.buttonColors(
+                backgroundColor = Color(0xAB0389FF),
+                disabledBackgroundColor = Color(0xFF586DF7),
+                contentColor = androidx.compose.ui.graphics.Color.White,
+                disabledContentColor = androidx.compose.ui.graphics.Color.White),
+            shape = RoundedCornerShape(15.dp),
             onClick = {
                 navController.navigate(Route.Entries.route)
             }
