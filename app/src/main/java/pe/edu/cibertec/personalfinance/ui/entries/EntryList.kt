@@ -129,30 +129,42 @@ fun EntryList(navController: NavController){
                                 Text(text = "S/${entry.amount}", fontSize = 16.sp)
                             }
                         }
-                        Column() {
-                            IconButton(modifier = Modifier.weight(1f), onClick = {
-                                navController.currentBackStackEntry?.savedStateHandle?.set(
-                                    key = "entry",
-                                    value = entry
-                                )
-                                navController.navigate(Route.EntryDetail.route)
-                            }) {
-                                Icon(Icons.Filled.Edit,null)
-                            }
-                            IconButton(modifier = Modifier.weight(1f), onClick = {
-                                entryRepository.deleteEntry(1, context, entry.id){ result ->
-                                    Toast.makeText(context, result.message.toString(), Toast.LENGTH_SHORT).show()
-                                    entryRepository.getEntries(1,context) {result ->
-                                        if(result is Result.Success){
-                                            entries.value = result.data!!
-
-                                        } else{
-                                            str.value = result.message.toString()
-                                        }
+                        Column(
+                            modifier = Modifier
+                                .weight(6f)
+                                .padding(1.dp)
+                                .fillMaxHeight(),
+                            verticalArrangement = Arrangement.Center
+                        ) {
+                            Row {
+                                Column {
+                                    IconButton(modifier = Modifier.weight(1f), onClick = {
+                                        navController.currentBackStackEntry?.savedStateHandle?.set(
+                                            key = "entry",
+                                            value = entry
+                                        )
+                                        navController.navigate(Route.EntryDetail.route)
+                                    }) {
+                                        Icon(Icons.Filled.Edit,null)
                                     }
                                 }
-                            }) {
-                                Icon(Icons.Filled.Delete, null)
+                                Column {
+                                    IconButton(modifier = Modifier.weight(1f), onClick = {
+                                        entryRepository.deleteEntry(1, context, entry.id){ result ->
+                                            Toast.makeText(context, result.message.toString(), Toast.LENGTH_SHORT).show()
+                                            entryRepository.getEntries(1,context) {result ->
+                                                if(result is Result.Success){
+                                                    entries.value = result.data!!
+
+                                                } else{
+                                                    str.value = result.message.toString()
+                                                }
+                                            }
+                                        }
+                                    }) {
+                                        Icon(Icons.Filled.Delete, null)
+                                    }
+                                }
                             }
                         }
                     }
