@@ -10,10 +10,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.navigation.compose.rememberNavController
 import pe.edu.cibertec.personalfinance.ui.Home
-import pe.edu.cibertec.personalfinance.ui.categories.CategoryList
-import pe.edu.cibertec.personalfinance.ui.entries.EntryList
 import pe.edu.cibertec.personalfinance.ui.theme.PersonalFinanceTheme
 
 class MainActivity : ComponentActivity() {
@@ -45,3 +42,4 @@ fun DefaultPreview() {
         Home()
     }
 }
+

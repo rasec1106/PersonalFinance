@@ -1,6 +1,7 @@
 package pe.edu.cibertec.personalfinance.data.remote
 
 import pe.edu.cibertec.personalfinance.data.remote.service.EntryService
+import pe.edu.cibertec.personalfinance.data.remote.service.UserService
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
@@ -9,6 +10,7 @@ object ApiClient {
 
     private var retrofit: Retrofit? = null
     private var entryService: EntryService? = null
+    private var userService: UserService? = null
 
     private fun getRetrofit(): Retrofit {
         if(retrofit == null){
@@ -24,5 +26,11 @@ object ApiClient {
             entryService = getRetrofit().create(EntryService:: class.java)
         }
         return entryService as EntryService
+    }
+    fun getUserInterface(): UserService {
+        if (userService == null){
+            userService = getRetrofit().create(UserService::class.java)
+        }
+        return userService as UserService
     }
 }
