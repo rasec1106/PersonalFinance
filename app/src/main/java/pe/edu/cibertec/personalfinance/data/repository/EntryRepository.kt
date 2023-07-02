@@ -14,10 +14,8 @@ import pe.edu.cibertec.personalfinance.util.Result
 class EntryRepository (
     private val entryService: EntryService = ApiClient.getEntryService()
 ){
-    fun getEntries(type: Int, context: Context, callback: (Result<List<Entry>>) -> Unit){
-        if(type == 1)
-            getEntriesRemote(callback)
-        getEntriesLocal(context, callback)
+    fun getEntries(type: Int, context: Context, userId: Int, callback: (Result<List<Entry>>) -> Unit){
+        getEntriesRemote(userId, callback)
     }
     fun createEntry(type: Int, context: Context, entry: Entry, callback: (Result<Entry>) -> Unit){
         createEntryRemote(entry, callback)
@@ -28,8 +26,8 @@ class EntryRepository (
     fun deleteEntry(type: Int, context: Context, id: Int, callback: (Result<Entry>) -> Unit){
         deleteEntryRemote(id, callback)
     }
-    private fun getEntriesRemote(callback: (Result<List<Entry>>) -> Unit){
-        entryService.getEntries().enqueue(object: Callback<List<Entry>> {
+    private fun getEntriesRemote(userId: Int, callback: (Result<List<Entry>>) -> Unit){
+        entryService.getEntriesByUserId(userId).enqueue(object: Callback<List<Entry>> {
             override fun onResponse(call: Call<List<Entry>>, response: Response<List<Entry>>) {
                 if(response.isSuccessful && response.body() != null){
                     callback(Result.Success(response.body()!!, "Response correctly fetched"))

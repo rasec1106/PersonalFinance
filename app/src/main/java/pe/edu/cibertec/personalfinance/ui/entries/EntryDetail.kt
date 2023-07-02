@@ -18,6 +18,7 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import pe.edu.cibertec.personalfinance.data.model.Category
 import pe.edu.cibertec.personalfinance.data.model.Entry
+import pe.edu.cibertec.personalfinance.data.model.User
 import pe.edu.cibertec.personalfinance.data.repository.EntryRepository
 import pe.edu.cibertec.personalfinance.ui.Route
 import pe.edu.cibertec.personalfinance.ui.categories.CategoryList
@@ -43,7 +44,7 @@ fun EntryDetail(navController: NavController){
     val type = 0
     val entryRepository = EntryRepository()
     val context = LocalContext.current
-
+    val user: User? = navController.currentBackStackEntry?.savedStateHandle?.get("user")
     navController.currentBackStackEntry?.savedStateHandle?.set<Category>(
         key = "category",
         value = selectedCategory.value
@@ -91,7 +92,8 @@ fun EntryDetail(navController: NavController){
                     selectedCategory.value!!,
                     date.value,
                     comment.value,
-                    type
+                    type,
+                    user!!.id
                 )
                 if(entry.id == 0){
                     entryRepository.createEntry(1, context, entry){ result ->

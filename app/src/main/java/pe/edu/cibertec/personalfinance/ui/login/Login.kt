@@ -2,6 +2,7 @@ package pe.edu.cibertec.personalfinance.Login.Models
 
 
 
+import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -39,6 +40,7 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import pe.edu.cibertec.personalfinance.data.model.User
 import pe.edu.cibertec.personalfinance.data.repository.UserRepository
 import pe.edu.cibertec.personalfinance.ui.Route
 import pe.edu.cibertec.personalfinance.ui.util.Result
@@ -60,6 +62,7 @@ fun LoginScreen(navController: NavController){
             val user = remember{ mutableStateOf(TextFieldValue())}
             val password = remember{ mutableStateOf(TextFieldValue())}
             val showPassword = remember { mutableStateOf((false))}
+            var userList: List<User>
 
 
             Column() {
@@ -150,6 +153,12 @@ fun LoginScreen(navController: NavController){
                     onClick = {
                         userRepository.login(user.value.text, password.value.text) { result ->
                             if (result is Result.Success) {
+                                userList = result.data!!
+                                Log.d("USERLIST", userList.toString())
+                                navController.currentBackStackEntry?.savedStateHandle?.set(
+                                    key = "user",
+                                    value = userList!!.first()
+                                )
                                 navController.navigate(Route.Entries.route)
                             } else {
                                 Toast.makeText(context, result.message.toString(), Toast.LENGTH_SHORT)
@@ -176,7 +185,6 @@ fun LoginScreen(navController: NavController){
                     shape = RoundedCornerShape(15.dp),
                     onClick = {
                         navController.navigate(Route.SignUp.route)
-
                     }
 
                 ) {
