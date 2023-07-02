@@ -1,16 +1,13 @@
 package pe.edu.cibertec.personalfinance.ui.categories
 
-
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.*
-
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -20,36 +17,38 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
-import pe.edu.cibertec.personalfinance.R
-import pe.edu.cibertec.personalfinance.data.local.AppDatabase
 import pe.edu.cibertec.personalfinance.data.model.Category
+import pe.edu.cibertec.personalfinance.data.repository.CategoryRepository
 
 import pe.edu.cibertec.personalfinance.ui.theme.PersonalFinanceTheme
+import pe.edu.cibertec.personalfinance.util.Result
 
 @Composable
 fun CategoryList(navController: NavController){
     val categories = remember{
         mutableStateOf(listOf<Category>())
     }
-
-    //categories.value = Category.populateWithMockData()
     val context = LocalContext.current
+    var str = remember {
+        mutableStateOf("")
+    }
+    val categoryRepository = CategoryRepository()
+    categoryRepository.getCategories(1,context) {result ->
+        if(result is Result.Success){
+            categories.value = result.data!!
 
-    val insertAll = listOf(
-        Category(1,"Comida","FOOD","#ff0000"),
-        Category(2,"Salud","HEALTH","#00ff00"),
-        Category(3,"Casa","HOME","#0000ff"),
-        Category(4,"Ahorros","SAVING","#ff00ff"),
-        Category(5,"Transporte","TRANSPORT","#ffff00"),
-        Category(6,"Viajes","TRAVEL","#00ffff"),
-        Category(7,"Ocio","LEISURE","#f0f0f0")
+        } else{
+            str.value = result.message.toString()
+        }
+    }
+    val currentCategory = remember {
+        mutableStateOf<Category?>(navController.previousBackStackEntry?.savedStateHandle?.get("category"))
+    }
 
+    navController.currentBackStackEntry?.savedStateHandle?.set(
+        key = "hasChanged",
+        value = false
     )
-    val dao = AppDatabase.getInstance(context).categoryDao()
-    dao.insertAll(insertAll)
-
-    val categoryDao = AppDatabase.getInstance(context).categoryDao()
-    categories.value = categoryDao.getAll()
 
     val remainder = categories.value.size%4
     LazyColumn(){
@@ -58,17 +57,35 @@ fun CategoryList(navController: NavController){
                 val slicedArray = categories.value.slice(it*4..it*4+3)
                 Row (){
                     slicedArray.forEach { category->
-                        Column(modifier = Modifier.weight(4f).padding(8.dp)) {
+                        Column(modifier = Modifier
+                            .weight(4f)
+                            .padding(8.dp)
+                        ) {
                             Row{
-                                IconButton(modifier = Modifier
-                                    .background(
-                                        shape = CircleShape,
-                                        color = category.getCategoryColor())
-                                    , onClick = {}) {
-                                    Icon(
-                                        ImageVector.vectorResource(id = category.getCategoryIcon()),
-                                        contentDescription = category.title
-                                    )
+                                Column(modifier = Modifier.background(color =
+                                    if(currentCategory.value?.id == category.id) Color.LightGray
+                                    else Color.White
+                                )) {
+                                    IconButton(modifier = Modifier
+                                        .background(
+                                            shape = CircleShape,
+                                            color = category.getCategoryColor()
+                                        ), onClick = {
+                                            currentCategory.value = category
+                                            navController.currentBackStackEntry?.savedStateHandle?.set(
+                                                key = "hasChanged",
+                                                value = true
+                                            )
+                                            navController.currentBackStackEntry?.savedStateHandle?.set(
+                                                key = "category",
+                                                value = category
+                                            )
+                                    }) {
+                                        Icon(
+                                            ImageVector.vectorResource(id = category.getCategoryIcon()),
+                                            contentDescription = category.title
+                                        )
+                                    }
                                 }
                             }
                             Row (
@@ -88,17 +105,34 @@ fun CategoryList(navController: NavController){
                     val slicedArray = categories.value.takeLast(remainder)
                     Row (){
                         slicedArray.forEach { category->
-                            Column(modifier = Modifier.weight(4f).padding(8.dp)) {
+                            Column(modifier = Modifier
+                                .weight(4f)
+                                .padding(8.dp)) {
                                 Row{
-                                    IconButton(modifier = Modifier
-                                        .background(
-                                            shape = CircleShape,
-                                            color = category.getCategoryColor())
-                                        , onClick = {}) {
-                                        Icon(
-                                            ImageVector.vectorResource(id = category.getCategoryIcon()),
-                                            contentDescription = category.title
-                                        )
+                                    Column(modifier = Modifier.background(color =
+                                    if(currentCategory.value?.id == category.id) Color.LightGray
+                                    else Color.White
+                                    )) {
+                                        IconButton(modifier = Modifier
+                                            .background(
+                                                shape = CircleShape,
+                                                color = category.getCategoryColor()
+                                            ), onClick = {
+                                                currentCategory.value = category
+                                                navController.currentBackStackEntry?.savedStateHandle?.set(
+                                                    key = "hasChanged",
+                                                    value = true
+                                                )
+                                                navController.currentBackStackEntry?.savedStateHandle?.set(
+                                                    key = "category",
+                                                    value = category
+                                                )
+                                        }) {
+                                            Icon(
+                                                ImageVector.vectorResource(id = category.getCategoryIcon()),
+                                                contentDescription = category.title
+                                            )
+                                        }
                                     }
                                 }
                                 Row (

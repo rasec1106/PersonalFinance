@@ -39,7 +39,7 @@ class EntryRepository (
             }
 
             override fun onFailure(call: Call<List<Entry>>, t: Throwable) {
-                callback(Result.Error("Albums not available"))
+                callback(Result.Error("Entries not available"))
             }
         })
     }
