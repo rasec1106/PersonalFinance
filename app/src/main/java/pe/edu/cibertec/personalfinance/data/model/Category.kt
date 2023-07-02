@@ -5,6 +5,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.Ignore
 import androidx.room.PrimaryKey
+import com.google.gson.annotations.SerializedName
 import pe.edu.cibertec.personalfinance.R
 
 
@@ -13,7 +14,7 @@ data class Category (
 
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "idCategory")
-    val idCategory: Int,
+    val id: Int,
 
     @ColumnInfo(name = "title")
     val title: String,

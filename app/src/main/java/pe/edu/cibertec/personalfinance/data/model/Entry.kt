@@ -5,13 +5,14 @@ import androidx.room.ColumnInfo
 import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.google.gson.annotations.SerializedName
 
 
 @Entity(tableName = "entry")
 data class Entry (
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "idEntry")
-    val idEntry: Int,
+    val id: Int,
 
     @ColumnInfo(name = "amount")
     @NonNull

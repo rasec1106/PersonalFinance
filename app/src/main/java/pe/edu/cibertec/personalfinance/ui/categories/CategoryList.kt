@@ -120,7 +120,7 @@ fun CategoryList(){
 
 @Preview(showBackground = true)
 @Composable
-fun DefaultPreview(){
+fun CategoryListDefaultPreview(){
     PersonalFinanceTheme {
         CategoryList()
     }

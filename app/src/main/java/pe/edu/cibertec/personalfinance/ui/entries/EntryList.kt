@@ -133,7 +133,7 @@ fun EntryList(){
 
 @Preview(showBackground = true)
 @Composable
-fun DefaultPreview(){
+fun EntryListDefaultPreview(){
     PersonalFinanceTheme {
         EntryList()
     }
