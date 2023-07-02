@@ -43,7 +43,7 @@ fun EntryList(navController: NavController){
         mutableStateOf("")
     }
     val entryRepository = EntryRepository()
-    entryRepository.getEntries(1,context) {result ->
+    entryRepository.getEntries(1,context) { result ->
         if(result is Result.Success){
             entries.value = result.data!!
 

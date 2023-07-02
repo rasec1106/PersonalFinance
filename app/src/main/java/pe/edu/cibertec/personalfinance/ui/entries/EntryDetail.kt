@@ -21,6 +21,7 @@ import pe.edu.cibertec.personalfinance.data.model.Entry
 import pe.edu.cibertec.personalfinance.data.repository.EntryRepository
 import pe.edu.cibertec.personalfinance.ui.Route
 import pe.edu.cibertec.personalfinance.ui.categories.CategoryList
+import pe.edu.cibertec.personalfinance.ui.categories.CategorySection
 import pe.edu.cibertec.personalfinance.ui.theme.PersonalFinanceTheme
 import pe.edu.cibertec.personalfinance.util.Result
 
@@ -43,7 +44,7 @@ fun EntryDetail(navController: NavController){
     val entryRepository = EntryRepository()
     val context = LocalContext.current
 
-    navController.previousBackStackEntry?.savedStateHandle?.set<Category>(
+    navController.currentBackStackEntry?.savedStateHandle?.set<Category>(
         key = "category",
         value = selectedCategory.value
     )
@@ -74,7 +75,7 @@ fun EntryDetail(navController: NavController){
             }
         )
         Text(text = "Categoria")
-        CategoryList(navController = navController)
+        CategorySection(navController = navController)
         Button(
             modifier = Modifier
                 .fillMaxWidth()
