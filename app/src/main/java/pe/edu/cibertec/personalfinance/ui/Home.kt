@@ -1,11 +1,9 @@
 package pe.edu.cibertec.personalfinance.ui
 
-import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import pe.edu.cibertec.personalfinance.data.model.Entry
 import pe.edu.cibertec.personalfinance.ui.categories.CategoryList
 import pe.edu.cibertec.personalfinance.ui.entries.EntryDetail
 import pe.edu.cibertec.personalfinance.ui.entries.EntryList
@@ -26,7 +24,6 @@ fun Home(){
     }
 }
 
-// a sealed class is like an enum
 sealed class Route(val route: String){
     object Entries: Route("entries")
     object Categories: Route("categories")
